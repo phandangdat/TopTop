@@ -1,0 +1,147 @@
+.wrapper {
+  width: 1100px;
+  box-shadow: rgb(0 0 0 / 6%) 0px 2px 8px;
+  border-radius: 8px;
+  background-color: rgb(255, 255, 255);
+  padding: 24px 56px;
+  position: relative;
+
+  & .wrap-loading {
+    position: fixed;
+    inset: 0px;
+    display: flex;
+    z-index: 1001;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+  & .title-one {
+    box-sizing: border-box;
+    margin-block: 0px;
+    font-size: 2.4rem;
+    line-height: 1.5;
+    font-weight: 700;
+    color: #161823;
+    display: block;
+  }
+
+  & .title-two {
+    box-sizing: border-box;
+    margin-block: 0px;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #16182380;
+  }
+
+  & .content {
+    display: flex;
+    margin-top: 24px;
+    margin-bottom: 50px;
+
+    & .upload-card {
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-direction: column;
+      cursor: pointer;
+      transition: 0.15s ease-in-out 0s;
+      padding-left: 35px;
+      padding-right: 35px;
+      width: 260px;
+      height: 458px;
+      border: 2px dashed #16182333;
+      box-sizing: border-box;
+
+      & span:nth-child(2) {
+        font-size: 1.8rem;
+        line-height: 1.5;
+        font-weight: 600;
+        color: var(--text-color-1);
+      }
+      &:hover {
+        background: #16182308;
+        border: 2px dashed rgb(254, 44, 85);
+      }
+      & .note-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        & span {
+          text-align: center;
+          font-size: 1.4rem;
+          line-height: 1.5;
+          font-weight: 400;
+          color: #16182380;
+        }
+      }
+
+      & .VideoInput_video {
+        display: block;
+        margin: 0;
+        max-width: 240px;
+        max-height: 350px;
+        border-radius: 15px;
+      }
+      & .VideoInput_input {
+        display: none;
+      }
+      & .button-upload {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 100px;
+        padding: 6px 30px;
+        border-radius: 2px;
+        font-size: 1.6rem;
+        font-weight: 700;
+        font-family: var(--font-family);
+        cursor: pointer;
+        border: 1px solid transparent;
+        -webkit-user-select: none;
+        user-select: none;
+        color: var(--white);
+        background-color: var(--primary);
+        border-color: var(--primary);
+      }
+    }
+
+    & .form-upload {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-left: 24px;
+      flex: 1 1 0%;
+      min-width: 0px;
+
+      & label {
+        font-size: 1.6rem;
+        line-height: 1.5;
+        font-weight: 600;
+        color: #161823;
+        display: inline;
+      }
+      & .caption-wrap {
+        display: flex;
+        flex-direction: column;
+
+        & input {
+          min-height: 46px;
+          position: relative;
+          border: 1px solid #1618231f;
+          border-radius: 4px;
+          width: 100%;
+          padding: 0px 80px 0px 16px;
+        }
+      }
+
+      & .button-wrap {
+        display: flex;
+        max-width: 400px;
+      }
+    }
+  }
+}

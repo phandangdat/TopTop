@@ -1,0 +1,25 @@
+.wrapper {
+    padding-top: 16px;
+    padding-left: 8px;
+    border-top: 1px solid #e3e3e4;
+    width: calc(100% - 10px);
+
+    a {
+        font-family: "IBM Plex Sans",ProximaNova,Arial,Tahoma,PingFangSC,sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 17px;
+        display: inline-block;
+        margin-right: 6px;
+        margin-top: 5px;
+        color: #16182380;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.title {
+    margin-bottom: 8px;
+}

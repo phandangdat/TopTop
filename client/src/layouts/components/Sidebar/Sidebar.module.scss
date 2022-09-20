@@ -1,0 +1,43 @@
+.simple {
+  max-height: calc(100vh - 90px);
+  z-index: -1;
+}
+
+.simple2 {
+  max-height: calc(100vh - 90px);
+  margin-right: 24px;
+}
+
+.wrapper2 {
+  width: 224px;
+  padding: 20px 0 26px 0px;
+  height: 100vh;
+  position: fixed;
+}
+.wrapper {
+  width: 356px;
+  padding: 20px 0 26px 8px;
+  margin-left: -18px;
+  height: 100vh;
+  position: fixed;
+
+  & .btn-wrapper {
+    border-top: 1px solid #e3e3e4;
+    padding: 20px 8px 24px 8px;
+
+    & .btn-text {
+      color: rgba(22, 24, 35, 0.5);
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    & .btn-login {
+      width: 100%;
+      font-size: 1.8rem;
+      line-height: 2.5rem;
+      margin-top: 20px;
+      padding-top: 11px;
+      padding-bottom: 11px;
+    }
+  }
+}

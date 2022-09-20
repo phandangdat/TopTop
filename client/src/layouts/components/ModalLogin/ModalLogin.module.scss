@@ -1,0 +1,243 @@
+.modal {
+  width: 483px;
+  height: 100%;
+  padding: 48px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: var(--white);
+
+  & .header {
+    color: rgb(22, 24, 35);
+    font-size: 32px;
+    margin: 16px auto;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  & .back {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    padding: 10px;
+    min-width: 0px;
+    font-size: 2.5rem;
+    background-color: transparent;
+  }
+  & .close {
+    position: absolute;
+    top: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    z-index: 1;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+    background: rgba(22, 24, 35, 0.03);
+  }
+
+  & .btns-login {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 375px;
+
+    & .btn-login {
+      color: rgb(22, 24, 35);
+      font-weight: 600;
+      border: 1px solid rgba(22, 24, 35, 0.12);
+      font-size: 15px;
+      padding: 0px 12px;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      height: 44px;
+      position: relative;
+      cursor: pointer;
+      margin-bottom: 16px;
+      word-break: keep-all;
+      white-space: nowrap;
+      background-color: var(--white);
+
+      & svg {
+        left: 12px;
+        font-size: 20px;
+        position: absolute;
+        display: flex;
+      }
+    }
+  }
+
+  & .footer {
+    color: rgb(22, 24, 35);
+    font-family: 'IBM Plex Sans', ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    height: 64px;
+    width: 100%;
+    border-top: 1px solid rgba(22, 24, 35, 0.12);
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 15px;
+    line-height: 18px;
+
+    & button {
+      color: rgb(254, 44, 85);
+      font-weight: 600;
+      font-size: 1.5rem;
+      margin-left: 3px;
+    }
+  }
+
+  & .pragraph-policy {
+    color: rgba(22, 24, 35, 0.5);
+    font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
+    font-size: 1.2rem;
+    line-height: 15px;
+    width: 375px;
+    text-align: center;
+    margin-bottom: 10px;
+
+    & a {
+      padding: 0;
+      font-weight: 400;
+      margin-left: 0;
+      font-size: 1.2rem;
+      min-width: 0;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+form {
+  min-width: 375px;
+
+
+  p {
+    color: rgb(22, 24, 35);
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+
+  & .mb-9 {
+    margin-bottom: 9px;
+  }
+  & .message-wrapper {
+    & .validate-message {
+      font-size: 1.2rem;
+      color: #ff4c3a;
+    }
+  }
+  & .input-wrapper {
+    position: relative;
+
+    & .input {
+      border-radius: 2px;
+      background-color: rgba(22, 24, 35, 0.06);
+      border: 1px solid rgba(22, 24, 35, 0.12);
+      padding-inline-start: 12px;
+      color: rgb(22, 24, 35);
+      line-height: 100%;
+      outline: none;
+      font-size: 16px;
+      height: 44px;
+      caret-color: rgb(254, 44, 85);
+      width: 100%;
+      padding-inline-end: unset;
+    }
+
+    & .error {
+      border: 1px solid #ff4c3a;
+      color:  #ff4c3a;
+    }
+
+    & .password-icon {
+      right: 0px;
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      position: absolute;
+      top: 0px;
+      height: 44px;
+      padding-inline-end: 16px;
+    }
+  }
+  & button {
+    width: 100%;
+  }
+}
+//Login by email or phone
+.form-login-by-gmail {
+  margin-bottom: 50px;
+  min-height: 230px;
+
+  & .forgot-btn {
+    color: rgba(22, 24, 35, 0.75);
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+}
+// register by email
+.form-register-by-gmail {
+  margin-bottom: 40px;
+  min-height: 330px;
+
+  & .select-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    & select {
+      background: rgba(22, 24, 35, 0.06);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      width: 120px;
+      height: 44px;
+      padding: 0px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      & option {
+        font-size: 16px;
+        padding: 0px 12px;
+        color: rgb(22, 24, 35);
+        max-height: 100px;
+      }
+    }
+  }
+
+  & .verify-wrapper {
+    display: flex;
+    max-width: 375px;
+    margin-bottom: 20px;
+
+    & .checkbox-wrapper {
+      margin-right: 5px;
+
+      & .checkbox {
+        width: 25px;
+        height: 25px;
+      }
+    }
+
+    & p {
+      color: rgba(22, 24, 35, 0.75);
+      font-size: 12px;
+      line-height: 16px;
+      display: inline;
+    }
+  }
+}
