@@ -3,35 +3,49 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import styles from './SuggestedAccounts.module.scss';
 import AccountItem from './AccountItem';
-import * as suggestedAccountsService from '~/services/suggestedAccountsService';
+import httpRequest from '~/utils/httpRequest';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function SuggestedAccounts({ label }) {
   const [data, setData] = useState([]);
-  const [showMore, setShowMore] = useState(5);
+  const [page, setPage] = useState(0);
   const [showLess, setShowLess] = useState(false);
+  const token = useSelector((state) => state.token);
 
   useEffect(() => {
     if (label === 'Tài khoản được đề xuất') {
       const fetchApi = async () => {
-        const result = await suggestedAccountsService.suggestedAccounts(1, showMore);
-        setData(result.data);
+        httpRequest
+          .get('/user/random_users', {
+            params: { page },
+            headers: { withCredentials: true },
+          })
+          .then((res) => setData([...data, ...res.data]));
       };
       fetchApi();
-    } else if (label === 'Following accounts') {
-      setData([]);
+    } else if (label === 'Các tài khoản đang follow') {
+      const fetchApi = async () => {
+        httpRequest
+          .get('/user/users_followed', {
+            params: { page },
+            headers: { Authorization: token, withCredentials: true },
+          })
+          .then((res) => setData([...data, ...res.data]));
+      };
+      fetchApi();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showMore]);
+  }, [page]);
 
   const handleShowItems = () => {
-    if (showLess) {
-      setShowMore(5);
+    if (data >= 10 && showLess) {
+      setPage(page + 1);
       setShowLess(false);
     } else {
-      setShowMore((prev) => prev + 10);
-      setShowLess(true);
+      setPage(0);
+      setShowLess(!showLess);
     }
   };
 
@@ -39,7 +53,7 @@ function SuggestedAccounts({ label }) {
     <div className={cx('wrapper')}>
       <p className={cx('label')}>{label}</p>
       {data.map((result) => (
-        <AccountItem key={result.id} data={result} />
+        <AccountItem key={result._id} data={result} />
       ))}
       <p className={cx('more-btn')} onClick={handleShowItems}>
         {showLess ? 'Ẩn bớt' : 'Xem tất cả'}

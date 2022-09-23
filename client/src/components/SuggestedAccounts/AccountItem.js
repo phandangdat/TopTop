@@ -32,9 +32,7 @@ function AccountItem({ data }) {
               <strong>{data.nickname}</strong>
               {data.tick ? <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} /> : null}
             </p>
-            <p className={cx('name')}>
-              {data.first_name} {data.last_name}
-            </p>
+            <p className={cx('name')}>{data.name}</p>
           </div>
         </Link>
       </Tippy>

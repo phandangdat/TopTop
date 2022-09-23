@@ -2,6 +2,7 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const Videos = require('../models/videoModel');
 const videoLike = require('../models/videoLikeModel');
+const Users = require('../models/userModel');
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -93,10 +94,21 @@ const videoController = {
       res.status(400).json({ message: err.message });
     }
   },
+  getVideoFollowUser: async (req, res) => {
+    try {
+      let { page, per_page } = req.query;
+      const limit = parseInt(per_page) || 10;
+      const skip = parseInt(page) || 0;
+      const userId = req.user.id;
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
   likeVideo: async (req, res) => {
     try {
       const videoId = req.params.id;
       const userId = req.user.id;
+      const userIdVideo = req.body.userIdVideo;
 
       const video = await Videos.findById(videoId);
 
@@ -113,11 +125,15 @@ const videoController = {
       await videoLike.create({
         videoId,
         userId,
+        userIdVideo,
       });
 
       video.likes_count = (await videoLike.find({ videoId })).length;
-
       await video.save();
+
+      const user = await Users.findById(userIdVideo);
+      user.likes_count = (await videoLike.find({ userIdVideo })).length;
+      await user.save();
 
       return res.json({ success: true });
     } catch (err) {
@@ -128,23 +144,31 @@ const videoController = {
     try {
       const videoId = req.params.id;
       const userId = req.user.id;
-
+      const userIdVideo = req.body.userIdVideo;
       const video = await Videos.findById(videoId);
 
       if (!video) {
         throw new Error('Video does not exist');
       }
 
-      const existingVideoLike = await videoLike.findOne({ videoId, userId });
+      const existingVideoLike = await videoLike.findOne({
+        videoId,
+        userId,
+        userIdVideo,
+      });
 
       if (!existingVideoLike) {
-        throw new Error('Post is already not liked');
+        throw new Error('Video is already not liked');
       }
 
       await existingVideoLike.remove();
 
       video.likes_count = (await videoLike.find({ videoId })).length;
       await video.save();
+
+      const user = await Users.findById(userIdVideo);
+      user.likes_count = (await videoLike.find({ userIdVideo })).length;
+      await user.save();
 
       return res.json({ success: true });
     } catch (err) {

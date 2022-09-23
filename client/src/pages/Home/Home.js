@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Video from '~/components/Video';
 import httpRequest from '~/utils/httpRequest';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
 function Home() {
   const [page, setPage] = useState(0);
   const [videos, setVideos] = useState([]);
@@ -47,7 +48,7 @@ function Home() {
       await httpRequest
         .get(`/api/videos_orther_user`, {
           params: { page },
-          headers: { 'content-type': 'multipart/form-data', Authorization: token, withCredentials: true },
+          headers: { Authorization: token, withCredentials: true },
         })
         .then((res) => {
           setVideos([...videos, ...res.data]);

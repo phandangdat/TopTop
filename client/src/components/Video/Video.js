@@ -6,14 +6,14 @@ import Tippy from '@tippyjs/react/headless';
 import { Comment, Heart, HeartRed, Share } from '../Icons';
 import AccountPreview from '../AccountPreview';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import httpRequest from '~/utils/httpRequest';
+// import httpRequest from '~/utils/httpRequest';
 import { useSelector } from 'react-redux';
-import Popup from 'reactjs-popup';
-import ModalLogin from '~/layouts/components/ModalLogin';
+import PopupLogin from '../PopupLogin';
+import * as httpRequest from '~/utils/httpRequest';
 
 const cx = classNames.bind(styles);
 
-export default function Video({ id, data }) {
+export default function Video({ data }) {
   const [followStatus, setFollowStatus] = useState(data.user.is_followed);
   const [like, setLike] = useState(data.is_liked);
   const [likeNumber, setLikeNumber] = useState(data.likes_count);
@@ -36,9 +36,15 @@ export default function Video({ id, data }) {
   const handleLike = async () => {
     if (!like) {
       await httpRequest
-        .post(`/api/like/${id}`, null, {
-          headers: { Authorization: token, withCredentials: true },
-        })
+        .post(
+          `/api/like/${data._id}`,
+          {
+            userIdVideo: data.user._id,
+          },
+          {
+            headers: { Authorization: token, withCredentials: true },
+          },
+        )
         .then((res) => {
           setLike(true);
           setLikeNumber(likeNumber + 1);
@@ -46,8 +52,11 @@ export default function Video({ id, data }) {
         .catch(() => {});
     } else {
       await httpRequest
-        .delete(`/api/like/${id}`, {
+        .deleteReq(`http://localhost:5000/api/like/${data._id}`, {
           headers: { Authorization: token, withCredentials: true },
+          data: {
+            userIdVideo: data.user._id,
+          },
         })
         .then((res) => {
           setLike(false);
@@ -68,7 +77,7 @@ export default function Video({ id, data }) {
         .catch(() => {});
     } else {
       await httpRequest
-        .delete(`/user/unfollow/${data.user._id}`, {
+        .deleteReq(`/user/unfollow/${data.user._id}`, {
           headers: { Authorization: token, withCredentials: true },
         })
         .then((res) => {
@@ -105,10 +114,18 @@ export default function Video({ id, data }) {
             <p className={cx('caption')}>{data.caption}</p>
           </div>
         </div>
-        {true && (
+        {auth.isLogged ? (
           <button className={cx('follow-button', { 'followed-button': followStatus })} onClick={handleFollow}>
             {followStatus ? 'Đang Follow' : 'Follow'}
           </button>
+        ) : (
+          <PopupLogin
+            children={
+              <button className={cx('follow-button', { 'followed-button': followStatus })} onClick={handleFollow}>
+                {followStatus ? 'Đang Follow' : 'Follow'}
+              </button>
+            }
+          />
         )}
       </div>
       <div className={cx('section')}>
@@ -122,18 +139,14 @@ export default function Video({ id, data }) {
               <strong>{likeNumber}</strong>
             </button>
           ) : (
-            <Popup
-              modal
-              closeOnDocumentClick={false}
-              trigger={
+            <PopupLogin
+              children={
                 <button onClick={handleLike}>
                   <span className={cx('icon-social')}>{like ? <HeartRed /> : <Heart />}</span>
                   <strong>{likeNumber}</strong>
                 </button>
               }
-            >
-              {(close) => <ModalLogin close={close} />}
-            </Popup>
+            />
           )}
           <button>
             <span className={cx('icon-social')}>

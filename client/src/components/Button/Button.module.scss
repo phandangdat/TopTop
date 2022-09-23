@@ -67,7 +67,18 @@
     background-color: rgba(254, 44, 85, 0.06);
   }
 }
+.outlineGray {
+	border: 1px solid rgb(227,227,228);
+  color: #161823;
+	background-color: rgb(255, 255, 255);
+  border-color: currentColor;
+  line-height: normal;
 
+  &:hover {
+    border-color: currentColor;
+    background-color: rgba(226, 226, 226, 0.4);
+  }
+}
 .text {
   &:hover {
     text-decoration: underline;

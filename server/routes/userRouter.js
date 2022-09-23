@@ -28,4 +28,7 @@ router.post('/facebook_login', userController.facebookLogin);
 
 router.post('/follow/:id', auth, userController.follow);
 router.delete('/unfollow/:id', auth, userController.unfollow);
+
+router.get('/users_followed', auth, userController.usersFollowed);
+router.get('/random_users', userController.getRandomUsers);
 module.exports = router;

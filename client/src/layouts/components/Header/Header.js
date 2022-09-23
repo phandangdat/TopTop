@@ -14,7 +14,6 @@ import {
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import Popup from 'reactjs-popup';
 import { useSelector } from 'react-redux';
 import config from '~/config';
 import Button from '~/components/Button';
@@ -24,7 +23,7 @@ import Menu from '~/components/Popper/Menu';
 import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Image from '~/components/Image';
 import Search from '../Search';
-import ModalLogin from '../ModalLogin';
+import PopupLogin from '~/components/PopupLogin';
 
 const cx = classNames.bind(styles);
 
@@ -130,21 +129,15 @@ function Header({ small = true }) {
             </>
           ) : (
             <>
-              <Popup
-                modal
-                trigger={
+              <PopupLogin
+                children={
                   <Button outline>
                     <FontAwesomeIcon icon={faArrowUpFromBracket} />
                     <span> Tải lên</span>
                   </Button>
                 }
-                closeOnDocumentClick={false}
-              >
-                {(close) => <ModalLogin close={close} />}
-              </Popup>
-              <Popup modal closeOnDocumentClick={false} trigger={<Button primary>Đăng nhập</Button>}>
-                {(close) => <ModalLogin close={close} />}
-              </Popup>
+              />
+              <PopupLogin children={<Button primary>Đăng nhập</Button>} />
               <Menu items={MENU_ITEMS} onChange={handleMenuChange}>
                 <button className={cx('more-btn')}>
                   <FontAwesomeIcon icon={faEllipsisVertical} />

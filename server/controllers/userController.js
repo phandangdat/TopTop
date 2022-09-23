@@ -372,10 +372,16 @@ const userController = {
       }
       const follow = await Follows.create({ userId, followingId });
 
-      const user = await Users.findById(followingId);
-      user.followings_count = (await Follows.find({ followingId })).length;
-      user.is_followed = true;
-      await user.save();
+      const userIsFollowed = await Users.findById(followingId);
+      userIsFollowed.followers_count = (
+        await Follows.find({ followingId })
+      ).length;
+      userIsFollowed.is_followed = true;
+      await userIsFollowed.save();
+
+      const userFollow = await Users.findById(userId);
+      userFollow.followings_count = (await Follows.find({ userId })).length;
+      await userFollow.save();
 
       return res.status(200).json({ data: follow });
     } catch (err) {
@@ -394,18 +400,83 @@ const userController = {
 
       await existingFollow.remove();
 
-      const user = await Users.findById(followingId);
-      user.followings_count = (await Follows.find({ followingId })).length;
-      user.is_followed = false;
-      await user.save();
+      const userIsFollowed = await Users.findById(followingId);
+      userIsFollowed.followers_count = (
+        await Follows.find({ followingId })
+      ).length;
+      userIsFollowed.is_followed = false;
+      await userIsFollowed.save();
+
+      const userFollow = await Users.findById(userId);
+      userFollow.followings_count = (await Follows.find({ userId })).length;
+      await userFollow.save();
 
       return res.status(200).json({ data: existingFollow });
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
   },
+  usersFollowed: async (req, res) => {
+    try {
+      let { page, size } = req.query;
+      const limit = parseInt(size) || 10;
+      const skip = parseInt(page) || 0;
+
+      const users = await Users.find({ is_followed: { $eq: true } })
+        .sort({ createdAt: -1 })
+        .select('-password -birthDay -createdAt -updatedAt -role -__v')
+        .limit(limit)
+        .skip(skip * limit);
+      res.status(200).json(users);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  },
+  getRandomUsers: async (req, res) => {
+    try {
+      let { page, per_page } = req.query;
+      let size = parseInt(per_page) || 10;
+      const skip = parseInt(page) || 0;
+
+      const users = await Users.find({ is_followed: { $ne: true } }).select(
+        '-password -birthDay -createdAt -updatedAt -role -__v'
+      );
+
+      const randomUsers = [];
+
+      if (size > users.length) {
+        size = users.length;
+      }
+
+      if (skip === 1) {
+        size = size + 5;
+      }
+      const randomIndices = getRandomIndices(size, users.length);
+
+      for (let i = 0; i < randomIndices.length; i++) {
+        const randomUser = users[randomIndices[i]];
+        randomUsers.push(randomUser);
+      }
+
+      return res.status(200).json(randomUsers);
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ error: err.message });
+    }
+  },
   searchUser: async (req, res) => {},
 };
+
+function getRandomIndices(size, sourceSize) {
+  const randomIndices = [];
+  while (randomIndices.length < size) {
+    const randomNumber = Math.floor(Math.random() * sourceSize);
+    if (!randomIndices.includes(randomNumber)) {
+      randomIndices.push(randomNumber);
+    }
+  }
+  return randomIndices;
+}
 
 function validateEmail(email) {
   const re =

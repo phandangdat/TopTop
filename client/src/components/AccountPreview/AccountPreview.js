@@ -15,9 +15,15 @@ function AccountPreview({ data }) {
         <Link to={`/@${data.nickName}`} target="_blank">
           <Image className={cx('avatar')} src={data.avatar} alt="" />
         </Link>
-        <Button className={cx('follow-btn')} primary>
-          Follow
-        </Button>
+        {data.is_followed ? (
+          <Button className={cx('follow-btn')} small outlineGray>
+            Đang Follow
+          </Button>
+        ) : (
+          <Button className={cx('follow-btn')} primary>
+            Follow
+          </Button>
+        )}
       </div>
       <div className={cx('body')}>
         <Link to={`/@${data.nickname}`} target="_blank" className={cx('nickname')}>

@@ -19,6 +19,7 @@ const Button = forwardRef(
       disabled = false,
       small = false,
       large = false,
+      outlineGray = false,
       children,
       className,
       leftIcon,
@@ -61,6 +62,7 @@ const Button = forwardRef(
       rounded,
       small,
       large,
+      outlineGray,
     });
 
     return (

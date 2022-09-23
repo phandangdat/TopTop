@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-import Popup from 'reactjs-popup';
 import { useSelector } from 'react-redux';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
@@ -16,8 +15,8 @@ import {
 import SuggestedAccounts from '~/components/SuggestedAccounts';
 import config from '~/config';
 import Button from '~/components/Button';
-import ModalLogin from '../ModalLogin';
 import Footer from '../Footer/Footer';
+import PopupLogin from '~/components/PopupLogin';
 
 const cx = classNames.bind(styles);
 
@@ -41,17 +40,13 @@ function Sidebar({ small }) {
         {!currentUser ? (
           <div className={cx('btn-wrapper')}>
             <p className={cx('btn-text')}>Đăng nhập để follow các tác giả, thích video và xem bình luận. </p>
-            <Popup
-              modal
-              trigger={
+            <PopupLogin
+              children={
                 <Button outline className={cx('btn-login')}>
                   Đăng nhập
                 </Button>
               }
-              closeOnDocumentClick={false}
-            >
-              {(close) => <ModalLogin close={close} />}
-            </Popup>
+            />
           </div>
         ) : null}
         <SuggestedAccounts label="Tài khoản được đề xuất" />

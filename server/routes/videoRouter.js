@@ -6,6 +6,7 @@ const auth = require('../middleware/auth');
 router.post('/upload_video', uploadVideo, auth, videoController.uploadVideo);
 router.get('/videos', videoController.getVideos);
 router.get('/videos_orther_user', auth, videoController.getVideoOrtherUser);
+router.get('/video_follow_user', auth, videoController.getVideoFollowUser);
 router.post('/like/:id', auth, videoController.likeVideo);
 router.delete('/like/:id', auth, videoController.unlikeVideo);
 

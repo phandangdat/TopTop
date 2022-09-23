@@ -12,6 +12,11 @@ const VideoLike = new mongoose.Schema(
       ref: 'Users',
       required: true,
     },
+    userIdVideo: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Users',
+      required: true,
+    },
   },
   { timestamps: true }
 );
