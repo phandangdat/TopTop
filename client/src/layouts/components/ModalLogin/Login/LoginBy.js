@@ -18,10 +18,9 @@ export default function LoginBy({ close }) {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    watch,
   } = useForm({ mode: 'all' });
   const dispatch = useDispatch();
-
   function handleLogin(data) {
     httpRequest
       .post(
@@ -104,7 +103,7 @@ export default function LoginBy({ close }) {
           Quên mật khẩu?
         </Button>
         <div>
-          <Button primary disabled={!getValues('email') || !getValues('password')}>
+          <Button primary disabled={!watch('email') || !watch('password')}>
             Đăng nhập
           </Button>
         </div>

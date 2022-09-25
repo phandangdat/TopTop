@@ -4,7 +4,7 @@ import ModalLogin from '~/layouts/components/ModalLogin';
 
 export default function PopupLogin({ children }) {
   return (
-    <Popup modal closeOnDocumentClick={false} trigger={children}>
+    <Popup lockScroll modal closeOnDocumentClick={false} trigger={children}>
       {(close) => <ModalLogin close={close} />}
     </Popup>
   );

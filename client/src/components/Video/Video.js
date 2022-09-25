@@ -3,13 +3,14 @@ import classNames from 'classnames/bind';
 import styles from './Video.module.scss';
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react/headless';
-import { Comment, Heart, HeartRed, Share } from '../Icons';
+import Popup from 'reactjs-popup';
+import { CommentIcon, Heart, HeartRed, Share } from '../Icons';
 import AccountPreview from '../AccountPreview';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-// import httpRequest from '~/utils/httpRequest';
 import { useSelector } from 'react-redux';
 import PopupLogin from '../PopupLogin';
 import * as httpRequest from '~/utils/httpRequest';
+import DetailVideo from '../DetailVideo/DetailVideo';
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +33,7 @@ export default function Video({ data }) {
   useEffect(() => {
     setLike(data.is_liked);
     setFollowStatus(data.user.is_followed);
-  }, [data.is_liked, data.user.is_followed]);
+  }, [data]);
   const handleLike = async () => {
     if (!like) {
       await httpRequest
@@ -148,12 +149,21 @@ export default function Video({ data }) {
               }
             />
           )}
-          <button>
-            <span className={cx('icon-social')}>
-              <Comment />
-            </span>
-            <strong>{data.comments_count}</strong>
-          </button>
+          <Popup
+            modal
+            closeOnDocumentClick={false}
+            lockScroll
+            trigger={
+              <button>
+                <span className={cx('icon-social')}>
+                  <CommentIcon />
+                </span>
+                <strong>{data.comments_count}</strong>
+              </button>
+            }
+          >
+            {(close) => <DetailVideo data={data} close={close} />}
+          </Popup>
           <button>
             <span className={cx('icon-social')}>
               <Share />

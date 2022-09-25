@@ -1,0 +1,218 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  .video-container {
+    flex: 1 1 896px;
+    background: rgba(0, 0, 0, 0.98);
+    position: relative;
+    overflow: hidden;
+    padding: 0px 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & .close {
+      position: absolute;
+      z-index: 1;
+      display: flex;
+      -webkit-box-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      top: 20px;
+      transition: opacity 0.3s ease 0s;
+      left: 20px;
+      color: white;
+      font-size: 30px;
+    }
+    & .video {
+      min-height: 360px;
+      max-height: 100%;
+      border-radius: 4px;
+      object-fit: cover;
+      height: 100%;
+    }
+  }
+  .content-container {
+    flex: 0 0 544px;
+    width: 544px;
+    min-width: 544px;
+    display: flex;
+    flex-direction: column;
+
+    & .section {
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+    }
+    & .wrap {
+      width: 100%;
+      justify-content: space-between;
+      padding: 32px 25px 0px;
+
+      & .user-info {
+        display: flex;
+        flex-direction: row;
+        width: 412px;
+
+        & .user-profile {
+          width: 40px;
+          height: 40px;
+          background-color: red;
+          border-radius: 25px;
+          margin-right: 15px;
+        }
+
+        & .wrapper-info {
+          flex-direction: column;
+
+          & .username {
+            font-size: 14px;
+          }
+        }
+
+        & .bold {
+          font-weight: 700;
+          font-size: 2rem;
+          line-height: 1;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      & .follow-button {
+        border: 1px solid #fe2c55;
+        border-radius: 3px;
+        width: 107px;
+        height: 28px;
+        color: #fe2c55;
+        font-weight: 600;
+        padding: 2px 0 3px;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: rgb(255, 255, 255);
+      }
+
+      & .followed-button {
+        border: 1px solid rgb(227, 227, 228);
+        border-radius: 3px;
+        min-width: 120px;
+        min-height: 28px;
+        color: #161823;
+        font-weight: 600;
+        padding: 5px;
+        font-size: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: rgb(255, 255, 255);
+      }
+    }
+    .caption {
+      margin: 5px 0 16px;
+      padding: 0 25px 0px;
+    }
+    .socials {
+      justify-content: start;
+      margin-bottom: 16px;
+      padding: 0 25px 0px;
+
+      & button {
+        border: none;
+        background: none;
+        outline: none;
+        padding: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:nth-child(2) {
+          margin-left: 30px;
+        }
+        & .icon-social {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 34px;
+          height: 34px;
+          font-size: 0px;
+          border-radius: 50%;
+          transition: all ease-in-out 200ms;
+          background-color: rgba(22, 24, 35, 0.06);
+          margin-top: 8px;
+          margin-bottom: 6px;
+          &:hover {
+            background-color: #1618231a;
+          }
+
+          & .custom-icon {
+            font-size: 23px;
+          }
+        }
+
+        & strong {
+          color: var(--text-color-2);
+          font-size: 12px;
+          margin-left: 5px;
+          line-height: 17px;
+          text-align: center;
+        }
+      }
+    }
+    & .comment-area {
+      height: 345px;
+
+      & .simple {
+        max-height: 100%;
+        background-color: rgb(248, 248, 248);
+        border-top: 1px solid rgba(22, 24, 35, 0.2);
+        border-bottom: 1px solid rgba(22, 24, 35, 0.2);
+      }
+      button {
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    & .input-container {
+      padding: 21px 25px;
+      display: inline-flex;
+      justify-content: space-between;
+      margin: auto;
+
+      & .input {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        background-color: rgba(22, 24, 35, 0.06);
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        padding: 0px 9px;
+
+        &:focus {
+          outline: 1px solid rgba(22, 24, 35, 0.2);
+        }
+      }
+    }
+  }
+}

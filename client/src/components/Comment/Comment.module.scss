@@ -1,0 +1,62 @@
+.comment {
+  padding: 32px 25px 0;
+}
+.section {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  justify-content: space-between;
+  & .user-info {
+    display: flex;
+    flex-direction: row;
+    width: 412px;
+
+    & .user-profile {
+      width: 40px;
+      height: 40px;
+      background-color: red;
+      border-radius: 25px;
+      margin-right: 15px;
+    }
+
+    & .wrapper-info {
+      flex-direction: column;
+
+      & .text-comment {
+        margin-top: 5px;
+        font-size: 16px;
+        line-height: 22px;
+        white-space: pre-line;
+        word-break: break-word;
+      }
+    }
+
+    & .bold {
+      font-weight: 700;
+      font-size: 2rem;
+      line-height: 1;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    & .answer-comment {
+      color: rgba(22, 24, 35, 0.5);
+      font-size: 14px;
+      line-height: 20px;
+      display: flex;
+      margin: 10px 0;
+      & .time-comment {
+        margin-right: 30px;
+      }
+    }
+  }
+  & .like-comment,
+  .button-view-more {
+    color: rgba(22, 24, 35, 0.5);
+  }
+  & .button-view-more {
+    font-weight: 400;
+  }
+}
