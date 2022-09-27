@@ -10,7 +10,7 @@ router.post('/refresh_token', userController.getAccessToken);
 router.post('/forgot', userController.forgotPassword);
 router.post('/resetPassword', auth, userController.resetPassword);
 router.get('/infor', auth, userController.getUserInfor);
-router.get('/all_infor', auth, authAdmin, userController.getUsersAllInfor);
+router.get('/all_infor', auth, userController.getUsersAllInfor);
 router.get('/logout', userController.logout);
 router.patch('/update', auth, userController.updateUser);
 router.patch(

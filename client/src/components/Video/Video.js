@@ -149,21 +149,33 @@ export default function Video({ data }) {
               }
             />
           )}
-          <Popup
-            modal
-            closeOnDocumentClick={false}
-            lockScroll
-            trigger={
-              <button>
-                <span className={cx('icon-social')}>
-                  <CommentIcon />
-                </span>
-                <strong>{data.comments_count}</strong>
-              </button>
-            }
-          >
-            {(close) => <DetailVideo data={data} close={close} />}
-          </Popup>
+          {auth.isLogged ? (
+            <Popup
+              modal
+              closeOnDocumentClick={false}
+              lockScroll
+              trigger={
+                <button>
+                  <span className={cx('icon-social')}>
+                    <CommentIcon />
+                  </span>
+                  <strong>{data.comments_count}</strong>
+                </button>
+              }
+            >
+              {(close) => <DetailVideo data={data} close={close} />}
+            </Popup>
+          ) : (
+            <PopupLogin
+              children={
+                <button onClick={handleLike}>
+                  <span className={cx('icon-social')}>{like ? <HeartRed /> : <Heart />}</span>
+                  <strong>{likeNumber}</strong>
+                </button>
+              }
+            />
+          )}
+
           <button>
             <span className={cx('icon-social')}>
               <Share />

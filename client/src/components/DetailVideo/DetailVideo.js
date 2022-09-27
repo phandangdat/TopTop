@@ -14,16 +14,17 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import { CommentIcon, Heart, HeartRed } from '../Icons';
 import Comment from '../Comment';
 import Button from '../Button';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 export default function DetailVideo({ close, data }) {
   const videoRef = useRef();
   const [followStatus, setFollowStatus] = useState(data.user.is_followed);
-  const { register, handleSubmit, watch } = useForm({ mode: 'all' });
+  const { register, handleSubmit, watch, reset } = useForm({ mode: 'all', defaultValues: { comment: '' } });
   const [like, setLike] = useState(data.is_liked);
   const [likeNumber, setLikeNumber] = useState(data.likes_count);
-
+  const [comments, setComments] = useState([]);
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
 
@@ -39,6 +40,19 @@ export default function DetailVideo({ close, data }) {
   useEffect(() => {
     setLike(data.is_liked);
     setFollowStatus(data.user.is_followed);
+  }, [data]);
+  useEffect(() => {
+    const getComments = async () => {
+      await httpRequest
+        .get(`api/comments/video/${data._id}`, null, {
+          headers: { Authorization: token, withCredentials: true },
+        })
+        .then((res) => {
+          setComments(res);
+        })
+        .catch(() => {});
+    };
+    getComments();
   }, [data]);
   const handleLike = async () => {
     if (!like) {
@@ -93,8 +107,24 @@ export default function DetailVideo({ close, data }) {
         .catch(() => {});
     }
   };
-  const handleComment = () => {
-    console.log('abc');
+  const handleComment = async () => {
+    await httpRequest
+      .post(
+        `/api/comments/${data._id}`,
+        {
+          content: watch('comment'),
+        },
+        {
+          headers: { Authorization: token, withCredentials: true },
+        },
+      )
+      .then((res) => {
+        setComments([comments, ...res]);
+        reset();
+      })
+      .catch((err) => {
+        toast.error(err.message.error);
+      });
   };
   return (
     <div className={cx('wrapper')}>
@@ -171,11 +201,7 @@ export default function DetailVideo({ close, data }) {
         </div>
         <div className={cx('comment-area')}>
           <SimpleBar className={cx('simple')}>
-            <Comment data={data} />
-            <Comment data={data} />
-            <Comment data={data} />
-            <Comment data={data} />
-            <Comment data={data} />
+            {comments && comments.map((result) => <Comment key={result._id} data={data} result={result} />)}
           </SimpleBar>
         </div>
         <form className={cx('input-container')} onSubmit={handleSubmit(handleComment)}>

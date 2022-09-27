@@ -3,6 +3,7 @@ const fs = require('fs');
 const Videos = require('../models/videoModel');
 const videoLike = require('../models/videoLikeModel');
 const Users = require('../models/userModel');
+const Follows = require('../models/followModel');
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -88,6 +89,7 @@ const videoController = {
         .limit(limit)
         .skip(skip * limit);
       await setLiked(videos, userId);
+      await setFollowed(videos, userId);
 
       res.status(200).json(videos);
     } catch (err) {
@@ -100,6 +102,8 @@ const videoController = {
       const limit = parseInt(per_page) || 10;
       const skip = parseInt(page) || 0;
       const userId = req.user.id;
+      const videos = await Follows.find({ userId: '6326c69d4715960d4079f336' });
+      res.status(200).json(videos);
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
@@ -186,6 +190,20 @@ const setLiked = async (videos, userId) => {
     userVideoLikes.forEach((userVideoLike) => {
       if (userVideoLike.videoId.equals(video._id)) {
         video.is_liked = true;
+        return;
+      }
+    });
+  });
+};
+const setFollowed = async (videos, userId) => {
+  let searchCondition = {};
+  if (userId) searchCondition = { userId };
+
+  const usersFollowed = await Follows.find(searchCondition);
+  videos.forEach((video) => {
+    usersFollowed.forEach((userFollowed) => {
+      if (userFollowed.followingId.equals(video.user._id)) {
+        video.user.is_followed = true;
         return;
       }
     });

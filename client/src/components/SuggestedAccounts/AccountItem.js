@@ -11,7 +11,7 @@ import Image from '../Image';
 
 const cx = classNames.bind(styles);
 
-function AccountItem({ data }) {
+function AccountItem({ data, label }) {
   const renderPreview = (props) => {
     return (
       <div tabIndex="-1" {...props}>
@@ -24,7 +24,20 @@ function AccountItem({ data }) {
 
   return (
     <div>
-      <Tippy interactive delay={[800, 0]} offset={[-20, 0]} placement="bottom" render={renderPreview}>
+      {label === 'Tài khoản được đề xuất' ? (
+        <Tippy interactive delay={[800, 0]} offset={[-20, 0]} placement="bottom" render={renderPreview}>
+          <Link to={`/@${data.nickname}`} className={cx('account-item')}>
+            <Image className={cx('avatar')} src={data.avatar} alt="" />
+            <div className={cx('item-info')}>
+              <p className={cx('nickname')}>
+                <strong>{data.nickname}</strong>
+                {data.tick ? <FontAwesomeIcon className={cx('check')} icon={faCheckCircle} /> : null}
+              </p>
+              <p className={cx('name')}>{data.name}</p>
+            </div>
+          </Link>
+        </Tippy>
+      ) : (
         <Link to={`/@${data.nickname}`} className={cx('account-item')}>
           <Image className={cx('avatar')} src={data.avatar} alt="" />
           <div className={cx('item-info')}>
@@ -35,7 +48,7 @@ function AccountItem({ data }) {
             <p className={cx('name')}>{data.name}</p>
           </div>
         </Link>
-      </Tippy>
+      )}
     </div>
   );
 }

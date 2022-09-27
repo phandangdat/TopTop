@@ -10,13 +10,13 @@ import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
-export default function Comment({ data }) {
+export default function Comment({ data, result }) {
   const [likeComment, setLikeComment] = useState(false);
   const renderPreview = (props) => {
     return (
       <div tabIndex="-1" {...props}>
         <PopperWrapper>
-          <AccountPreview data={data.user} />
+          <AccountPreview data={result.commenter} />
         </PopperWrapper>
       </div>
     );
@@ -26,8 +26,8 @@ export default function Comment({ data }) {
       <div className={cx('user-info')}>
         <div>
           <Tippy interactive delay={[1000, 800]} offset={[124, 0]} placement="bottom" render={renderPreview}>
-            <Link to={`/@${data.user.nickname}`}>
-              <img className={cx('user-profile')} alt="avatar" src={data.user.avatar} width={'100%'} />
+            <Link to={`/@${result.commenter.nickname}`}>
+              <img className={cx('user-profile')} alt="avatar" src={result.commenter.avatar} width={'100%'} />
             </Link>
           </Tippy>
         </div>
@@ -35,10 +35,10 @@ export default function Comment({ data }) {
           <div>
             <Tippy interactive delay={[1000, 800]} offset={[10, 27]} placement="bottom" render={renderPreview}>
               <div className={cx('section', 'wrapper-info')}>
-                <Link to={`/@${data.user.nickname}`} className={cx('bold')}>
-                  {data.user.name}
+                <Link to={`/@${result.commenter.nickname}`} className={cx('bold')}>
+                  {result.commenter.name}
                 </Link>
-                <p className={cx('text-comment')}>nhẹ nhàng nhưng đậm chất lắm ah nha.yêu ngoại Giàu quá đi 🥰🥰</p>
+                <p className={cx('text-comment')}>{result.content}</p>
               </div>
             </Tippy>
           </div>

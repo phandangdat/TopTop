@@ -376,7 +376,6 @@ const userController = {
       userIsFollowed.followers_count = (
         await Follows.find({ followingId })
       ).length;
-      userIsFollowed.is_followed = true;
       await userIsFollowed.save();
 
       const userFollow = await Users.findById(userId);
@@ -404,7 +403,6 @@ const userController = {
       userIsFollowed.followers_count = (
         await Follows.find({ followingId })
       ).length;
-      userIsFollowed.is_followed = false;
       await userIsFollowed.save();
 
       const userFollow = await Users.findById(userId);
@@ -421,12 +419,17 @@ const userController = {
       let { page, size } = req.query;
       const limit = parseInt(size) || 10;
       const skip = parseInt(page) || 0;
-
-      const users = await Users.find({ is_followed: { $eq: true } })
+      const userId = req.user.id;
+      const usersFollowed = await Follows.find({ userId });
+      const usersFollowedId = usersFollowed.map((userFollowed) => {
+        return userFollowed.followingId;
+      });
+      const users = await Users.find({ _id: usersFollowedId })
         .sort({ createdAt: -1 })
         .select('-password -birthDay -createdAt -updatedAt -role -__v')
         .limit(limit)
         .skip(skip * limit);
+      await setFollowed(users, userId);
       res.status(200).json(users);
     } catch (err) {
       res.status(400).json({ message: err.message });
@@ -438,7 +441,7 @@ const userController = {
       let size = parseInt(per_page) || 10;
       const skip = parseInt(page) || 0;
 
-      const users = await Users.find({ is_followed: { $ne: true } }).select(
+      const users = await Users.find().select(
         '-password -birthDay -createdAt -updatedAt -role -__v'
       );
 
@@ -477,7 +480,20 @@ function getRandomIndices(size, sourceSize) {
   }
   return randomIndices;
 }
+const setFollowed = async (users, userId) => {
+  let searchCondition = {};
+  if (userId) searchCondition = { userId };
 
+  const usersFollowed = await Follows.find(searchCondition);
+  users.forEach((user) => {
+    usersFollowed.forEach((userFollowed) => {
+      if (userFollowed.followingId.equals(user._id)) {
+        user.is_followed = true;
+        return;
+      }
+    });
+  });
+};
 function validateEmail(email) {
   const re =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

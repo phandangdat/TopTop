@@ -53,7 +53,7 @@ function SuggestedAccounts({ label }) {
     <div className={cx('wrapper')}>
       <p className={cx('label')}>{label}</p>
       {data.map((result) => (
-        <AccountItem key={result._id} data={result} />
+        <AccountItem key={result._id} data={result} label={label} />
       ))}
       <p className={cx('more-btn')} onClick={handleShowItems}>
         {showLess ? 'Ẩn bớt' : 'Xem tất cả'}
