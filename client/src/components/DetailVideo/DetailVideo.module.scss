@@ -5,7 +5,7 @@
   background-color: white;
   .video-container {
     flex: 1 1 896px;
-    background: rgba(0, 0, 0, 0.98);
+    background: rgba(0, 0, 0, 0.9);
     position: relative;
     overflow: hidden;
     padding: 0px 80px;
@@ -175,7 +175,7 @@
       }
     }
     & .comment-area {
-      height: 400px;
+      height: 360px;
 
       & .simple {
         max-height: 100%;
