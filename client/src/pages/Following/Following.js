@@ -36,17 +36,7 @@ function Following() {
   useEffect(() => {
     const getVideos = async () => {
       await httpRequest
-        .get(`/api/videos`, {
-          params: { page },
-        })
-        .then((res) => {
-          setVideos([...videos, ...res.data]);
-        })
-        .catch(() => {});
-    };
-    const getVideosOrtherUser = async () => {
-      await httpRequest
-        .get(`/api/videos_orther_user`, {
+        .get(`/api/video_follow_user`, {
           params: { page },
           headers: { Authorization: token, withCredentials: true },
         })
@@ -55,7 +45,7 @@ function Following() {
         })
         .catch(() => {});
     };
-    auth.isLogged ? getVideosOrtherUser() : getVideos();
+    getVideos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, auth.isLogged]);
   function loadPage() {

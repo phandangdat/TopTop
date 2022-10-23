@@ -20,7 +20,7 @@ router.patch(
   userController.updateUsersRole
 );
 router.delete('/delete/:id', auth, authAdmin, userController.deleteUser);
-router.get('/searchUser', userController.searchUser);
+router.get('/search_user', userController.searchUser);
 
 // Social Login
 router.post('/google_login', userController.googleLogin);

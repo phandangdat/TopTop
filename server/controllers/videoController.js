@@ -102,7 +102,24 @@ const videoController = {
       const limit = parseInt(per_page) || 10;
       const skip = parseInt(page) || 0;
       const userId = req.user.id;
-      const videos = await Follows.find({ userId: '6326c69d4715960d4079f336' });
+      const userFollowing = await Follows.find({ userId });
+      const userFollowed = userFollowing.map((user) => user.followingId);
+      const videos = await Videos.find({ user: userFollowed })
+        .sort({ createdAt: -1 })
+        .populate('user', [
+          'avatar',
+          'name',
+          'nickname',
+          'likes_count',
+          'followers_count',
+          'tick',
+          'bio',
+          'is_followed',
+        ])
+        .limit(limit)
+        .skip(skip * limit);
+      await setLiked(videos, userId);
+      await setFollowed(videos, userId);
       res.status(200).json(videos);
     } catch (err) {
       res.status(400).json({ message: err.message });
