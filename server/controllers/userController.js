@@ -467,7 +467,20 @@ const userController = {
       return res.status(400).json({ error: err.message });
     }
   },
-  searchUser: async (req, res) => {},
+  searchUser: async (req, res) => {
+    const searchValue = req.query.user;
+    const user = await Users.find({
+      $or: [
+        {
+          name: { $regex: searchValue },
+        },
+        {
+          nickname: { $regex: searchValue },
+        },
+      ],
+    });
+    res.json(user);
+  },
 };
 
 function getRandomIndices(size, sourceSize) {

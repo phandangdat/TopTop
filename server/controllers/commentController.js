@@ -1,4 +1,3 @@
-const Users = require('../models/userModel');
 const Videos = require('../models/videoModel');
 const Comments = require('../models/commentModel');
 const cooldown = new Set();
@@ -40,9 +39,8 @@ const commentController = {
 
       await Comments.populate(comment, {
         path: 'commenter',
-        select: '-password -birthDay -role -__v -email',
+        select: '-password -birthDay -role -email',
       });
-
       return res.json(comment);
     } catch (err) {
       return res.status(400).json({ error: err.message });
@@ -66,6 +64,7 @@ const commentController = {
 
       for (let i = 0; i < comments.length; i++) {
         const comment = comments[i];
+
         if (comment.parent) {
           let commentParent = commentParents[comment.parent];
           commentParent.children = [...commentParent.children, comment];

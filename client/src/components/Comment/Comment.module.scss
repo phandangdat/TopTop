@@ -18,6 +18,10 @@
       border-radius: 25px;
       margin-right: 15px;
     }
+    & .avatar-small {
+      width: 30px;
+      height: 30px;
+    }
 
     & .wrapper-info {
       flex-direction: column;
@@ -50,6 +54,12 @@
       & .time-comment {
         margin-right: 30px;
       }
+      & .rep-comment {
+        cursor: pointer;
+        &:hover {
+          color: var(--primary);
+        }
+      }
     }
   }
   & .like-comment,
@@ -58,5 +68,8 @@
   }
   & .button-view-more {
     font-weight: 400;
+    &:hover {
+      color: var(--primary);
+    }
   }
 }

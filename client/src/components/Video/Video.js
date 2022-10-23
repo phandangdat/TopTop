@@ -18,6 +18,7 @@ export default function Video({ data }) {
   const [followStatus, setFollowStatus] = useState(data.user.is_followed);
   const [like, setLike] = useState(data.is_liked);
   const [likeNumber, setLikeNumber] = useState(data.likes_count);
+  const [commentNumber, setCommentNummber] = useState(data.comments_count);
   const token = useSelector((state) => state.token);
   const auth = useSelector((state) => state.auth);
 

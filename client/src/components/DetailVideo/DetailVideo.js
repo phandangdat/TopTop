@@ -24,10 +24,11 @@ export default function DetailVideo({ close, data }) {
   const { register, handleSubmit, watch, reset } = useForm({ mode: 'all', defaultValues: { comment: '' } });
   const [like, setLike] = useState(data.is_liked);
   const [likeNumber, setLikeNumber] = useState(data.likes_count);
+  const [commentNumber, setCommentNummber] = useState(data.comments_count);
   const [comments, setComments] = useState([]);
   const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.token);
-
+  const [subComment, setSubComment] = useState({});
   const renderPreview = (props) => {
     return (
       <div tabIndex="-1" {...props}>
@@ -41,19 +42,7 @@ export default function DetailVideo({ close, data }) {
     setLike(data.is_liked);
     setFollowStatus(data.user.is_followed);
   }, [data]);
-  const getComments = async () => {
-    await httpRequest
-      .get(`api/comments/video/${data._id}`, null, {
-        headers: { Authorization: token, withCredentials: true },
-      })
-      .then((res) => {
-        setComments(res);
-      })
-      .catch(() => {});
-  };
-  useEffect(() => {
-    getComments();
-  }, []);
+
   const handleLike = async () => {
     if (!like) {
       await httpRequest
@@ -107,26 +96,65 @@ export default function DetailVideo({ close, data }) {
         .catch(() => {});
     }
   };
-  const handleComment = async () => {
+  const getComments = async () => {
     await httpRequest
-      .post(
-        `/api/comments/${data._id}`,
-        {
-          content: watch('comment'),
-        },
-        {
-          headers: { Authorization: token, withCredentials: true },
-        },
-      )
-      .then((res) => {
-        reset();
-        getComments();
-        setComments([comments, ...res]);
+      .get(`api/comments/video/${data._id}`, {
+        headers: { Authorization: token, withCredentials: true },
       })
-      .catch((err) => {
-        toast.error(err.message.error);
-      });
+      .then((res) => {
+        setComments(res);
+        setSubComment(false);
+      })
+      .catch(() => {});
   };
+  const handleComment = async () => {
+    if (subComment.boolean) {
+      await httpRequest
+        .post(
+          `/api/comments/${data._id}`,
+          {
+            content: watch('comment'),
+            parentId: subComment.idCmt,
+          },
+          {
+            headers: { Authorization: token, withCredentials: true },
+          },
+        )
+        .then((res) => {
+          reset();
+          getComments();
+          setCommentNummber(commentNumber + 1);
+          setComments([comments, ...res]);
+        })
+        .catch((err) => {
+          toast.error(err.message.error);
+        });
+    } else {
+      await httpRequest
+        .post(
+          `/api/comments/${data._id}`,
+          {
+            content: watch('comment'),
+          },
+          {
+            headers: { Authorization: token, withCredentials: true },
+          },
+        )
+        .then((res) => {
+          reset();
+          getComments();
+          setCommentNummber(commentNumber + 1);
+          setComments([comments, ...res]);
+        })
+        .catch((err) => {
+          toast.error(err.message.error);
+        });
+    }
+  };
+  useEffect(() => {
+    getComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('video-container')}>
@@ -197,27 +225,45 @@ export default function DetailVideo({ close, data }) {
             <span className={cx('icon-social')}>
               <CommentIcon />
             </span>
-            <strong>{data.comments_count}</strong>
+            <strong>{commentNumber}</strong>
           </button>
         </div>
         <div className={cx('comment-area')}>
           <SimpleBar className={cx('simple')}>
-            {comments && comments.map((result) => <Comment key={result._id} data={data} result={result} />)}
+            {comments &&
+              comments.map((result) => (
+                <Comment key={result._id} data={data} result={result} setSubComment={setSubComment} />
+              ))}
           </SimpleBar>
         </div>
         <form className={cx('input-container')} onSubmit={handleSubmit(handleComment)}>
-          <input
-            {...register('comment', {
-              maxLength: {
-                value: 150,
-              },
-            })}
-            maxLength="150"
-            placeholder="Thêm bình luận..."
-            className={cx('input')}
-            autoComplete="off"
-            size="50"
-          />
+          {subComment ? (
+            <input
+              {...register('comment', {
+                maxLength: {
+                  value: 150,
+                },
+              })}
+              maxLength="150"
+              placeholder={`Trả lời @${subComment.userCmt}`}
+              className={cx('input')}
+              autoComplete="off"
+              size="50"
+            />
+          ) : (
+            <input
+              {...register('comment', {
+                maxLength: {
+                  value: 150,
+                },
+              })}
+              maxLength="150"
+              placeholder="Thêm bình luận..."
+              className={cx('input')}
+              autoComplete="off"
+              size="50"
+            />
+          )}
           <Button text disabled={!watch('comment')}>
             Đăng
           </Button>
