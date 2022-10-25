@@ -1,5 +1,6 @@
 const Users = require('../models/userModel');
 const Follows = require('../models/followModel');
+const Videos = require('../models/videoModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const sendMail = require('./sendMail');
@@ -480,6 +481,39 @@ const userController = {
       ],
     });
     res.json(user);
+  },
+  profileUser: async (req, res) => {
+    try {
+      const nickname = req.params.nickname;
+
+      const user = await Users.findOne({ nickname }).select('-password');
+
+      if (!user) {
+        throw new Error('User does not exist');
+      }
+      const videos = await Videos.find({ user: user._id })
+        // .populate('user')
+        .sort('-createdAt');
+
+      let likes_count = 0;
+
+      videos.forEach((video) => {
+        likes_count += video.likes_count;
+      });
+
+      const data = {
+        user,
+        videos: {
+          count: videos.length,
+          likes_count,
+          data: videos,
+        },
+      };
+
+      return res.status(200).json(data);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
+    }
   },
 };
 

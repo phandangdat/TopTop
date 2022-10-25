@@ -31,4 +31,6 @@ router.delete('/unfollow/:id', auth, userController.unfollow);
 
 router.get('/users_followed', auth, userController.usersFollowed);
 router.get('/random_users', userController.getRandomUsers);
+
+router.get('/:nickname', userController.profileUser);
 module.exports = router;
