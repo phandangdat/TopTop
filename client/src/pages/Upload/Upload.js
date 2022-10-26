@@ -71,7 +71,7 @@ function Upload() {
       <span className={cx('title-one')}>Tải video lên</span>
       <span className={cx('title-two')}>Đăng video vào tài khoản của bạn</span>
       <div className={cx('content')}>
-        <div className={cx('upload-card')}>
+        <div className={cx('upload-card')} onClick={handleChoose}>
           {source === undefined ? (
             <>
               <img
