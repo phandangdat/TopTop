@@ -6,7 +6,6 @@ import styles from './Comment.module.scss';
 import { SmallHeartIcon, SmallHeartRedIcon } from '../Icons';
 import AccountPreview from '../AccountPreview';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
